@@ -4,6 +4,51 @@
 <head>
     <meta charset="UTF-8" />
     <title>Edit person</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,8 +71,9 @@
     <label for="address">address</label>
     <input th:field="*{address}" type="text" id="address"/>
     <div th:if="${#fields.hasErrors('addres')}" th:errors="*{address}">error</div>
-    <br>
-    <input type="submit" value="Update person"/>
+    <br/>
+    <input type="submit" value="Update!"/>
+
 </form>
 </body>
 </html>

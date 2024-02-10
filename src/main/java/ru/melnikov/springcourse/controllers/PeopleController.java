@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.melnikov.springcourse.DAO.PersonDAO;
 import ru.melnikov.springcourse.models.Person;
+import ru.melnikov.springcourse.services.PeopleService;
 import ru.melnikov.springcourse.util.NewSpringValidator;
 
 import javax.validation.Valid;
@@ -14,22 +14,22 @@ import javax.validation.Valid;
 @Controller
 public class PeopleController {
     private final NewSpringValidator newSpringValidator;
-    private final PersonDAO personDAO;
+    private final PeopleService peopleService;
     @Autowired
-    public PeopleController(NewSpringValidator newSpringValidator, PersonDAO personDAO) {
+    public PeopleController(NewSpringValidator newSpringValidator, PeopleService peopleService) {
         this.newSpringValidator = newSpringValidator;
-        this.personDAO = personDAO;
+        this.peopleService = peopleService;
     }
 
     @GetMapping("/show")
     public String showAll(Model model){
-        model.addAttribute("people",personDAO.showAll());
+        model.addAttribute("people",peopleService.showAll());
         return "first/showAll";
     }
 
     @GetMapping("/show/{id}")
     public String showIndex(@PathVariable("id") int id, Model model){
-        model.addAttribute("person",personDAO.index(id));
+        model.addAttribute("person",peopleService.showOne(id));
         return "first/index";
     }
 
@@ -41,15 +41,16 @@ public class PeopleController {
     @PostMapping("/show")
     public String addPerson(@ModelAttribute("person") @Valid Person person,
                             BindingResult bindingResult){
+        newSpringValidator.validate(person,bindingResult);
         if (bindingResult.hasErrors()) return "forms/newPersonForm";
-    personDAO.save(person);
+    peopleService.save(person);
     return "redirect:/show";
     }
 
     @GetMapping("/show/{id}/edit")
     public String formForEditPerson(@PathVariable("id") int id,
                                     Model model){
-        model.addAttribute("person", personDAO.index(id));
+        model.addAttribute("person", peopleService.showOne(id));
         return "forms/editPersonForm";
     }
 
@@ -57,14 +58,15 @@ public class PeopleController {
     public String editPerson(@PathVariable("id") int id,
                              @ModelAttribute("person") @Valid Person person,
                              BindingResult bindingResult){
+        newSpringValidator.validate(person,bindingResult);
         if (bindingResult.hasErrors()) return "forms/editPersonForm";
-        personDAO.update(id,person);
+        peopleService.update(id,person);
         return "redirect:/show";
     }
 
     @DeleteMapping("/show/{id}")
     public String delete(@PathVariable("id") int id) {
-        personDAO.delete(id);
+        peopleService.delete(id);
         return "redirect:/show";
     }
 }

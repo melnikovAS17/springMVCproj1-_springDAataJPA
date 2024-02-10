@@ -1,10 +1,11 @@
 package ru.melnikov.springcourse.config;
 
+
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+
 
 public class SpringDispatcherInit extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
@@ -25,11 +26,14 @@ public class SpringDispatcherInit extends AbstractAnnotationConfigDispatcherServ
     @Override
     public void onStartup(ServletContext aServletContext) throws ServletException {
         super.onStartup(aServletContext);
+
         registerHiddenFieldFilter(aServletContext);
     }
 
     private void registerHiddenFieldFilter(ServletContext aContext) {
         aContext.addFilter("hiddenHttpMethodFilter",
-                new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
+                new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null, true, "/*");
     }
+
+
 }
